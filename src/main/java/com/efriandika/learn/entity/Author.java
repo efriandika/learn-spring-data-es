@@ -1,11 +1,16 @@
 package com.efriandika.learn.entity;
 
+import org.springframework.data.elasticsearch.annotations.Document;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name="learn_author")
+@Document(indexName = "author", type = "author", shards = 1, replicas = 0)
 public class Author implements Serializable {
+
+    @org.springframework.data.annotation.Id
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
     @Column(name="id")
