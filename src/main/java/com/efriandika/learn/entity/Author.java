@@ -1,13 +1,16 @@
 package com.efriandika.learn.entity;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldIndex;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name="learn_author")
-@Document(indexName = "author", type = "author", shards = 1, replicas = 0)
+@Document(indexName = "blogging", type = "author", shards = 1, replicas = 0)
 public class Author implements Serializable {
 
     @org.springframework.data.annotation.Id
@@ -19,6 +22,11 @@ public class Author implements Serializable {
     @Column(name="username")
     private String username;
 
+    @Field(type = FieldType.String,
+            index = FieldIndex.analyzed,
+            searchAnalyzer = "standard",
+            indexAnalyzer = "standard",
+            store = true)
     @Column(name="fullname")
     private String fullname;
 
@@ -66,6 +74,7 @@ public class Author implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
 
     @Override
     public String toString() {

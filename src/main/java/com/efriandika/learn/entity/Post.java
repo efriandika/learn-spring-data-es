@@ -1,11 +1,18 @@
 package com.efriandika.learn.entity;
 
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldIndex;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "learn_post")
+@Document(indexName = "blogging", type = "post", shards = 1, replicas = 0)
 public class Post implements Serializable {
+    @org.springframework.data.annotation.Id
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
     @Column(name="id")
@@ -18,8 +25,19 @@ public class Post implements Serializable {
     @JoinColumn(name = "author", nullable = false)
     private Author author;
 
+    @Field(type = FieldType.String,
+            index = FieldIndex.analyzed,
+            searchAnalyzer = "standard",
+            indexAnalyzer = "standard",
+            store = true)
     @Column(name="content")
     private String content;
+
+    public Post(String title, Author author, String content) {
+        this.title = title;
+        this.author = author;
+        this.content = content;
+    }
 
     public Long getId() {
         return id;

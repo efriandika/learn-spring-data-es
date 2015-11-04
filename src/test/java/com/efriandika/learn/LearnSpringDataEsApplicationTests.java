@@ -1,6 +1,5 @@
-package com.efriandika;
+package com.efriandika.learn;
 
-import com.efriandika.learn.LearnSpringDataEsApplication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -12,6 +11,6 @@ public class LearnSpringDataEsApplicationTests {
 
 	@Test
 	public void contextLoads() {
-	}
 
+	}
 }

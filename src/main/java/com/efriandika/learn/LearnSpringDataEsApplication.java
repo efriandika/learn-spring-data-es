@@ -7,12 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.data.elasticsearch.repository.ElasticsearchCrudRepository;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = "com.efriandika.learn.repository")
-@EnableElasticsearchRepositories(basePackages = "com.efriandika.learn.repository.elasticsearch")
+@EnableJpaRepositories(includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = JpaRepository.class))
+@EnableElasticsearchRepositories(includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = ElasticsearchCrudRepository.class))
 public class LearnSpringDataEsApplication implements CommandLineRunner {
 
     @Autowired
@@ -28,11 +32,12 @@ public class LearnSpringDataEsApplication implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
+        // authorEsRepository.deleteAll();
         // authorService.deleteAllAuthor();
-        createAuthor();
-        indexAuthor();
-        fetchAuthorFromEs();
-        fetchAllAuthor();
+        // createAuthor();
+        // indexing();
+        // fetchAuthorFromEs();
+        // fetchAllAuthor();
     }
 
     private void createAuthor(){
@@ -40,13 +45,13 @@ public class LearnSpringDataEsApplication implements CommandLineRunner {
         System.out.println("-------------------------------");
 
         authorService.createAuthor(new Author("efriandika", "Efriandika Pratama", "efriandika@gmail.com"));
-        authorService.createAuthor(new Author("riska", "Riska Ferbiana", "riska@gmail.com"));
+        authorService.createAuthor(new Author("riska", "Riska Febriana", "riska@gmail.com"));
         authorService.createAuthor(new Author("coba.tiga", "Coba User", "coba@gmail.com"));
 
         System.out.println();
     }
 
-    private void indexAuthor(){
+    private void indexing(){
         System.out.println("Indexing author:");
         System.out.println("-------------------------------");
 
