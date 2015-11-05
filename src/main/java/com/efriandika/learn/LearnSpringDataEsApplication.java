@@ -43,14 +43,14 @@ public class LearnSpringDataEsApplication implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        // authorEsRepository.deleteAll(); // Delete Documents
+        authorEsRepository.deleteAll(); // Delete Documents
         template.deleteIndex(Author.class); // Delete Index: Author Entity
         authorService.deleteAllAuthor();
         createAuthor();
         indexing();
         fetchAuthorFromEs();
         fetchAllAuthor();
-        // searchFromEs("rian");
+        searchFromEs("efriandika");
     }
 
     private void createAuthor(){
@@ -105,7 +105,7 @@ public class LearnSpringDataEsApplication implements CommandLineRunner {
 
         // Searching
         NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
-        queryBuilder.withQuery(multiMatchQuery(keyword, "", "", ""));
+        queryBuilder.withQuery(multiMatchQuery(keyword, "fullname", "username"));
 
         Page<Author> results = authorEsRepository.search(queryBuilder.build());
 

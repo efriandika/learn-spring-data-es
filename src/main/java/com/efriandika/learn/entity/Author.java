@@ -23,7 +23,6 @@ public class Author implements Serializable {
     private String username;
 
     @Field(type = FieldType.String,
-            index = FieldIndex.analyzed,
             searchAnalyzer = "standard",
             indexAnalyzer = "standard",
             store = true)
