@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional(readOnly = true)
 public class JpaRepositoryAuthorService implements AuthorService {
@@ -19,6 +21,12 @@ public class JpaRepositoryAuthorService implements AuthorService {
     @Transactional(propagation= Propagation.REQUIRED)
     public Author createAuthor(Author author) {
         return authorRepository.save(author);
+    }
+
+    @Override
+    @Transactional(propagation= Propagation.REQUIRED)
+    public List<Author> createAuthor(Iterable<Author> authors) {
+        return authorRepository.save(authors);
     }
 
     @Override
@@ -54,6 +62,7 @@ public class JpaRepositoryAuthorService implements AuthorService {
     }
 
     @Override
+    @Transactional(propagation=Propagation.REQUIRED)
     public void deleteAllAuthor() {
         authorRepository.deleteAll();
     }

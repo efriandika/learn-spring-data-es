@@ -9,10 +9,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.repository.ElasticsearchCrudRepository;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 @SpringBootApplication
 @EnableJpaRepositories(includeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = JpaRepository.class))
@@ -25,6 +33,9 @@ public class LearnSpringDataEsApplication implements CommandLineRunner {
     @Autowired
     private AuthorEsRepository authorEsRepository;
 
+    @Autowired
+    private ElasticsearchTemplate template;
+
     public static void main(String[] args) {
         SpringApplication.run(LearnSpringDataEsApplication.class, args);
         // SpringApplication.run(LearnSpringDataEsApplication.class, "--debug").close();
@@ -32,21 +43,29 @@ public class LearnSpringDataEsApplication implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        // authorEsRepository.deleteAll();
-        // authorService.deleteAllAuthor();
-        // createAuthor();
-        // indexing();
-        // fetchAuthorFromEs();
-        // fetchAllAuthor();
+        // authorEsRepository.deleteAll(); // Delete Documents
+        template.deleteIndex(Author.class); // Delete Index: Author Entity
+        authorService.deleteAllAuthor();
+        createAuthor();
+        indexing();
+        fetchAuthorFromEs();
+        fetchAllAuthor();
+        // searchFromEs("rian");
     }
 
     private void createAuthor(){
         System.out.println("Creating author:");
         System.out.println("-------------------------------");
 
-        authorService.createAuthor(new Author("efriandika", "Efriandika Pratama", "efriandika@gmail.com"));
-        authorService.createAuthor(new Author("riska", "Riska Febriana", "riska@gmail.com"));
-        authorService.createAuthor(new Author("coba.tiga", "Coba User", "coba@gmail.com"));
+        List<Author> authors = new ArrayList<>();
+        authors.add(new Author("efriandi kacang", "Efria", "efr@gmail.com"));
+        authors.add(new Author("efriandika", "Efriandika Pratama", "efriandika@gmail.com"));
+        authors.add(new Author("efrian", "Efrian Dika", "efrian@gmail.com"));
+        authors.add(new Author("dika", "Febrian febriano", "dika@gmail.com"));
+        authors.add(new Author("febriandi", "Efriandika Pratama", "febriandi@gmail.com"));
+        authors.add(new Author("febriana", "Riska Febriana", "riska@gmail.com"));
+        authors.add(new Author("febriani", "Riska Febriani", "riskai@gmail.com"));
+        authorService.createAuthor(authors);
 
         System.out.println();
     }
@@ -78,5 +97,20 @@ public class LearnSpringDataEsApplication implements CommandLineRunner {
             System.out.println(author.toString());
         }
         System.out.println();
+    }
+
+    public void searchFromEs(String keyword){
+        System.out.println("Searching from ES:");
+        System.out.println("-------------------------------");
+
+        // Searching
+        NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
+        queryBuilder.withQuery(multiMatchQuery(keyword, "", "", ""));
+
+        Page<Author> results = authorEsRepository.search(queryBuilder.build());
+
+        for(Author author:results){
+            System.out.println(author.toString());
+        }
     }
 }
