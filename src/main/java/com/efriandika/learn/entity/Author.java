@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name="learn_author")
-@Document(indexName = "blogging", type = "author", shards = 1, replicas = 0)
+@Document(indexName = "blogging", type = "author")
 public class Author implements Serializable {
 
     @org.springframework.data.annotation.Id

@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "learn_post")
-@Document(indexName = "blogging", type = "post", shards = 1, replicas = 0)
+@Document(indexName = "blogging", type = "post")
 public class Post implements Serializable {
     @org.springframework.data.annotation.Id
     @Id

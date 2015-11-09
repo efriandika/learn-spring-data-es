@@ -43,8 +43,11 @@ public class LearnSpringDataEsApplication implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        authorEsRepository.deleteAll(); // Delete Documents
         template.deleteIndex(Author.class); // Delete Index: Author Entity
+        template.createIndex(Author.class);
+        template.refresh(Author.class, true);
+        template.putMapping(Author.class);
+
         authorService.deleteAllAuthor();
         createAuthor();
         indexing();
