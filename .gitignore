@@ -12,3 +12,6 @@ buildNumber.properties
 
 ### Intellij
 .idea
+
+### Embedded Elasticsearch
+data
