@@ -1,5 +1,6 @@
 package com.efriandika.learn.entity;
 
+import com.efriandika.learn.listener.IndexingAuthorListener;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldIndex;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 @Entity
 @Table(name="learn_author")
 @Document(indexName = "blogging", type = "author")
+@EntityListeners({IndexingAuthorListener.class})
 public class Author implements Serializable {
 
     @org.springframework.data.annotation.Id

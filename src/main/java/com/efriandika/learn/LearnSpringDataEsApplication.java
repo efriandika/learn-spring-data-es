@@ -50,7 +50,7 @@ public class LearnSpringDataEsApplication implements CommandLineRunner {
 
         authorService.deleteAllAuthor();
         createAuthor();
-        indexing();
+        // indexing();
         fetchAuthorFromEs();
         fetchAllAuthor();
         searchFromEs("efriandika");
